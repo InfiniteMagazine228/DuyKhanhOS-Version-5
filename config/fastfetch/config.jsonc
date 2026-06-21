@@ -1,0 +1,16 @@
+{
+  "logo": {
+    "source": "ascii"
+  },
+
+  "modules": [
+    "os",
+    "kernel",
+    "uptime",
+    "shell",
+    "de",
+    "wm",
+    "cpu",
+    "memory"
+  ]
+}
