@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Calamares
+Exec=pkexec calamares
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
