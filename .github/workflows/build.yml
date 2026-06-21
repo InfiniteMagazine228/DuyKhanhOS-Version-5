@@ -7,9 +7,12 @@ jobs:
   build:
     runs-on: ubuntu-24.04
 
-    steps:
+    permissions:
+      contents: write
 
-      - uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
@@ -57,8 +60,18 @@ jobs:
           sudo cp "$KERNEL" iso/live/vmlinuz
           sudo cp "$INITRD" iso/live/initrd.img
 
-      - uses: actions/upload-artifact@v4
+      - name: Build GRUB
+        run: |
+          chmod +x scripts/grub.sh
+          sudo ./scripts/grub.sh
+
+      - name: Build ISO
+        run: |
+          chmod +x scripts/make_iso.sh
+          sudo ./scripts/make_iso.sh
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
         with:
-          name: DuyKhanhOS-live
-          path: |
-            iso/live/*
+          name: DuyKhanhOS-5.0-final-amd64
+          path: output/DuyKhanhOS-5.0-final-amd64.iso
