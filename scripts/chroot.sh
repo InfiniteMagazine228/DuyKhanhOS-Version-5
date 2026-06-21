@@ -38,23 +38,19 @@ file-roller \
 plymouth \
 plymouth-themes
 
-# User live
+# Create live user
 useradd -m -s /bin/bash live || true
 
 echo "live:live" | chpasswd
 
 usermod -aG sudo live
 
-# Locale
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-locale-gen
-
 # Hostname
 echo "DuyKhanhOS" > /etc/hostname
 
 # Enable services
-systemctl enable NetworkManager || true
 systemctl enable lightdm || true
+systemctl enable NetworkManager || true
 
 apt clean
 
