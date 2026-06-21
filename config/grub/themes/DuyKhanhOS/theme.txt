@@ -1,0 +1,14 @@
+desktop-image: "bg.png"
+
+title-text: "DuyKhanhOS"
+title-color: "#00ffff"
+
++ boot_menu {
+  left = 15%
+  top = 25%
+  width = 35%
+  height = 50%
+
+  item_color = "#ffffff"
+  selected_item_color = "#00ffff"
+}
