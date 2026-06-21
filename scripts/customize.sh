@@ -1,11 +1,32 @@
-mkdir -p rootfs/usr/share/backgrounds
+#!/bin/bash
+set -e
 
-cp config/wallpapers/cy.jpg \
-rootfs/usr/share/backgrounds/cy.jpg
+ROOTFS=rootfs
 
-mkdir -p rootfs/home/live/.config/xfce4/xfconf/xfce-perchannel-xml
+echo "Installing wallpaper..."
 
-cp overlay/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml \
-rootfs/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/
+sudo mkdir -p $ROOTFS/usr/share/backgrounds
 
-chown -R 1000:1000 rootfs/home/live
+sudo cp config/wallpapers/cy.jpg \
+$ROOTFS/usr/share/backgrounds/cy.jpg
+
+echo "Creating XFCE config..."
+
+sudo mkdir -p \
+$ROOTFS/home/live/.config/xfce4/xfconf/xfce-perchannel-xml
+
+sudo cp \
+overlay/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml \
+$ROOTFS/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/
+
+echo "Fix ownership..."
+
+sudo chroot $ROOTFS useradd -m -s /bin/bash live || true
+
+echo "live:live" | sudo chroot $ROOTFS chpasswd
+
+sudo chroot $ROOTFS usermod -aG sudo live
+
+sudo chown -R 1000:1000 $ROOTFS/home/live
+
+echo "Done."
