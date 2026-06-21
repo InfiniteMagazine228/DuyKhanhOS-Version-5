@@ -8,12 +8,13 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           sudo apt update
+
           sudo apt install -y \
             debootstrap \
             squashfs-tools \
@@ -22,8 +23,7 @@ jobs:
             grub-efi-amd64-bin \
             grub2-common \
             mtools \
-            dosfstools \
-            rsync
+            dosfstools
 
       - name: Build rootfs
         run: |
@@ -35,11 +35,14 @@ jobs:
           chmod +x scripts/customize.sh
           sudo ./scripts/customize.sh
 
+      - name: Show boot files
+        run: |
+          sudo ls -lah rootfs/boot
+
       - name: Create SquashFS
         run: |
           sudo mksquashfs rootfs filesystem.squashfs \
             -comp xz \
-            -wildcards \
             -e boot
 
       - name: Prepare ISO structure
@@ -48,21 +51,14 @@ jobs:
 
           sudo cp filesystem.squashfs iso/live/
 
-          sudo cp rootfs/boot/vmlinuz-* iso/live/vmlinuz
-          sudo cp rootfs/boot/initrd.img-* iso/live/initrd.img
+          KERNEL=$(sudo ls rootfs/boot/vmlinuz-* | head -n1)
+          INITRD=$(sudo ls rootfs/boot/initrd.img-* | head -n1)
 
-      - name: Build GRUB EFI
-        run: |
-          chmod +x scripts/grub.sh
-          ./scripts/grub.sh
+          sudo cp "$KERNEL" iso/live/vmlinuz
+          sudo cp "$INITRD" iso/live/initrd.img
 
-      - name: Build ISO
-        run: |
-          chmod +x scripts/make_iso.sh
-          ./scripts/make_iso.sh
-
-      - name: Upload ISO
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: DuyKhanhOS-ISO
-          path: output/*.iso
+          name: DuyKhanhOS-live
+          path: |
+            iso/live/*
