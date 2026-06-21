@@ -1,0 +1,14 @@
+{
+ "logo": {
+   "source": "auto"
+ },
+ "display": {
+   "separator": ": "
+ },
+ "modules": [
+   "os",
+   "kernel",
+   "shell",
+   "de"
+ ]
+}
