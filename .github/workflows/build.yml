@@ -73,6 +73,10 @@ jobs:
           chmod +x scripts/make_iso.sh
           sudo ./scripts/make_iso.sh
 
+      - name: Fix ownership
+        run: |
+          sudo chown -R $USER:$USER output
+
       - name: Generate SHA256
         run: |
           sha256sum output/DuyKhanhOS-5.0-final-amd64.iso \
