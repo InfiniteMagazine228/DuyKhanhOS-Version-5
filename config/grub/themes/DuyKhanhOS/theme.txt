@@ -1,14 +1,28 @@
 desktop-image: "bg.png"
 
-title-text: "DuyKhanhOS"
+title-text: "DuyKhanhOS Cyber Edition"
+title-font: "Unifont Regular 20"
+
 title-color: "#00ffff"
 
 + boot_menu {
   left = 15%
   top = 25%
-  width = 35%
+  width = 40%
   height = 50%
 
+  item_font = "Unifont Regular 16"
+
   item_color = "#ffffff"
+
   selected_item_color = "#00ffff"
+
+  item_height = 32
+}
+
++ label {
+  top = 90%
+  left = 2%
+  text = "DuyKhanhOS v5.0-final"
+  color = "#00ffff"
 }
