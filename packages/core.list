@@ -8,5 +8,5 @@ wget
 nano
 vim
 htop
-fastfetch
 ibus-unikey
+neofetch
