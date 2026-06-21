@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=DuyKhanhOS
+Description=DuyKhanhOS Cyber Edition
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/DuyKhanhOS
+ScriptFile=/usr/share/plymouth/themes/DuyKhanhOS/DuyKhanhOS.script
