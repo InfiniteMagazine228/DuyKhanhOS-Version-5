@@ -1,17 +1,11 @@
-#!/bin/bash
+mkdir -p rootfs/usr/share/backgrounds
 
-set -e
+cp config/wallpapers/cy.jpg \
+rootfs/usr/share/backgrounds/cy.jpg
 
-ROOTFS=rootfs
+mkdir -p rootfs/home/live/.config/xfce4/xfconf/xfce-perchannel-xml
 
-echo "Creating live user..."
+cp overlay/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml \
+rootfs/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/
 
-sudo chroot $ROOTFS useradd -m -s /bin/bash live
-
-echo "live:live" | sudo chroot $ROOTFS chpasswd
-
-sudo chroot $ROOTFS usermod -aG sudo live
-
-sudo mkdir -p $ROOTFS/home/live
-
-sudo chown 1000:1000 $ROOTFS/home/live
+chown -R 1000:1000 rootfs/home/live
