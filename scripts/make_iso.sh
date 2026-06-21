@@ -19,3 +19,5 @@ xorriso -as mkisofs \
 -e EFI/boot/bootx64.efi \
 -no-emul-boot \
 iso
+
+echo "ISO created."
