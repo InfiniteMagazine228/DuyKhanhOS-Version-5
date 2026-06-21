@@ -11,6 +11,7 @@ jobs:
       contents: write
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -26,7 +27,8 @@ jobs:
             grub-efi-amd64-bin \
             grub2-common \
             mtools \
-            dosfstools
+            dosfstools \
+            rsync
 
       - name: Build rootfs
         run: |
@@ -46,6 +48,7 @@ jobs:
         run: |
           sudo mksquashfs rootfs filesystem.squashfs \
             -comp xz \
+            -b 1M \
             -e boot
 
       - name: Prepare ISO structure
@@ -70,8 +73,26 @@ jobs:
           chmod +x scripts/make_iso.sh
           sudo ./scripts/make_iso.sh
 
-      - name: Upload ISO
+      - name: Generate SHA256
+        run: |
+          sha256sum output/DuyKhanhOS-5.0-final-amd64.iso \
+            > output/sha256sum.txt
+
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: DuyKhanhOS-5.0-final-amd64
-          path: output/DuyKhanhOS-5.0-final-amd64.iso
+          path: |
+            output/DuyKhanhOS-5.0-final-amd64.iso
+            output/sha256sum.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v5.0-final
+          name: DuyKhanhOS v5.0-final
+          files: |
+            output/DuyKhanhOS-5.0-final-amd64.iso
+            output/sha256sum.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
