@@ -11,6 +11,10 @@ xorriso -as mkisofs \
 -joliet-long \
 -l \
 -iso-level 3 \
+-b boot/grub/bios.img \
+-no-emul-boot \
+-boot-load-size 4 \
+-boot-info-table \
 -eltorito-alt-boot \
 -e EFI/boot/bootx64.efi \
 -no-emul-boot \
