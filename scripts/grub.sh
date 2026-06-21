@@ -21,3 +21,8 @@ grub-mkimage \
   -p /boot/grub \
   biosdisk iso9660 normal linux search configfile \
   part_gpt part_msdos ext2 fat
+
+cat \
+/usr/lib/grub/i386-pc/cdboot.img \
+iso/boot/grub/core.img \
+> iso/boot/grub/bios.img
