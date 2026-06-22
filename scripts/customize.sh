@@ -3,20 +3,14 @@ set -eux
 
 ROOTFS=rootfs
 
-sudo mkdir -p \
-"$ROOTFS/usr/share/backgrounds"
+mkdir -p \
+"$ROOTFS/home/live/Desktop"
 
-sudo cp config/wallpapers/cy.jpg \
-"$ROOTFS/usr/share/backgrounds/cy.jpg"
+cp overlay/home/live/Desktop/Install\ DuyKhanhOS.desktop \
+"$ROOTFS/home/live/Desktop/"
 
-sudo mkdir -p \
-"$ROOTFS/home/live/.config/xfce4/xfconf/xfce-perchannel-xml"
+chmod +x \
+"$ROOTFS/home/live/Desktop/Install DuyKhanhOS.desktop"
 
-if [ -f overlay/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml ]
-then
-    sudo cp \
-    overlay/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml \
-    "$ROOTFS/home/live/.config/xfce4/xfconf/xfce-perchannel-xml/"
-fi
-
-sudo chown -R 1000:1000 "$ROOTFS/home/live"
+chown -R 1000:1000 \
+"$ROOTFS/home/live"
