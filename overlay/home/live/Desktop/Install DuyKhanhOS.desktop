@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=Install DuyKhanhOS
-Comment=Install DuyKhanhOS to your computer
+Comment=Install DuyKhanhOS to your hard disk
 Exec=pkexec calamares
 Icon=calamares
 Terminal=false
