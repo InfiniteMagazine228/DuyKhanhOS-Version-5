@@ -15,7 +15,8 @@ network-manager \
 dbus-x11 \
 xorg \
 xinit \
-policykit-1 \
+polkitd \
+pkexec \
 accountsservice \
 locales \
 ca-certificates \
@@ -38,7 +39,8 @@ vlc \
 gparted \
 file-roller \
 plymouth \
-plymouth-themes
+plymouth-themes \
+calamares
 
 # Create live user
 useradd -m -s /bin/bash live || true
