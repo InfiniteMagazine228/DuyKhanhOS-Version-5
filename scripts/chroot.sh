@@ -47,6 +47,10 @@ apt install -y \
     arc-theme \
     papirus-icon-theme \
     fonts-dejavu \
+    xfce4-power-manager \
+    xfce4-screenshooter \
+    pavucontrol \
+    policykit-1-gnome \
     calamares
 
 # Create live user
