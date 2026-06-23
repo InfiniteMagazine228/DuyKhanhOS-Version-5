@@ -79,3 +79,25 @@ apt clean
 
 rm -rf /var/lib/apt/lists/*
 mkdir -p /etc/xdg/autostart
+# Auto start installer if booted with installer option
+
+cat > /usr/local/bin/start-installer << 'EOF'
+#!/bin/bash
+
+if grep -q installer /proc/cmdline; then
+    sleep 5
+    pkexec calamares
+fi
+EOF
+
+chmod +x /usr/local/bin/start-installer
+
+mkdir -p /etc/xdg/autostart
+
+cat > /etc/xdg/autostart/calamares.desktop << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=Calamares
+Exec=/usr/local/bin/start-installer
+NoDisplay=true
+EOF
