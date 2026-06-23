@@ -28,7 +28,8 @@ jobs:
             grub2-common \
             mtools \
             dosfstools \
-            rsync
+            rsync \
+            tree
 
       - name: Build rootfs
         run: |
@@ -42,7 +43,14 @@ jobs:
 
       - name: Show boot files
         run: |
+          echo "===== rootfs/boot ====="
           sudo ls -lah rootfs/boot
+
+          echo "===== Kernel ====="
+          sudo find rootfs/boot -name "vmlinuz-*"
+
+          echo "===== Initrd ====="
+          sudo find rootfs/boot -name "initrd.img-*"
 
       - name: Create SquashFS
         run: |
@@ -58,16 +66,22 @@ jobs:
 
           sudo cp filesystem.squashfs iso/live/
 
-          KERNEL=$(sudo ls rootfs/boot/vmlinuz-* | head -n1)
-          INITRD=$(sudo ls rootfs/boot/initrd.img-* | head -n1)
+          KERNEL=$(sudo find rootfs/boot -name "vmlinuz-*" | head -n1)
+          INITRD=$(sudo find rootfs/boot -name "initrd.img-*" | head -n1)
+
+          echo "Kernel=$KERNEL"
+          echo "Initrd=$INITRD"
 
           sudo cp "$KERNEL" iso/live/vmlinuz
           sudo cp "$INITRD" iso/live/initrd.img
 
-      - name: Debug ISO
+      - name: Debug live files
         run: |
+          echo "===== iso/live ====="
           ls -lah iso/live
-          ls -lah rootfs/boot
+
+          echo "===== ISO tree ====="
+          find iso
 
       - name: Prepare GRUB
         run: |
@@ -79,14 +93,18 @@ jobs:
           chmod +x scripts/make_iso.sh
           sudo ./scripts/make_iso.sh
 
+      - name: Verify output
+        run: |
+          ls -lah output
+
       - name: Fix ownership
         run: |
           sudo chown -R $USER:$USER output
 
       - name: Generate SHA256
         run: |
-          sha256sum output/DuyKhanhOS-5.0-final-amd64.iso \
-            > output/sha256sum.txt
+          cd output
+          sha256sum DuyKhanhOS-5.0-final-amd64.iso > sha256sum.txt
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
