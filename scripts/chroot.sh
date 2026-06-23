@@ -78,3 +78,4 @@ ls -lah /boot
 apt clean
 
 rm -rf /var/lib/apt/lists/*
+mkdir -p /etc/xdg/autostart
