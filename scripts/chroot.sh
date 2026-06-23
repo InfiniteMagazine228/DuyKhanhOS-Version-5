@@ -7,16 +7,17 @@ apt update
 
 apt install -y \
 linux-image-amd64 \
+initramfs-tools \
 live-boot \
 live-config \
 systemd-sysv \
 sudo \
 network-manager \
+network-manager-gnome \
 dbus-x11 \
 xorg \
 xinit \
 polkitd \
-pkexec \
 accountsservice \
 locales \
 ca-certificates \
@@ -38,6 +39,8 @@ firefox-esr \
 vlc \
 gparted \
 file-roller \
+mousepad \
+ristretto \
 plymouth \
 plymouth-themes \
 calamares
@@ -50,13 +53,13 @@ echo "live:live" | chpasswd
 usermod -aG sudo live
 
 # Hostname
-echo "DuyKhanhOS" > /etc/hostname
+echo DuyKhanhOS > /etc/hostname
 
 # Locale
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
-# Set LightDM as default display manager
+# Display manager
 echo "/usr/sbin/lightdm" > /etc/X11/default-display-manager
 
 ln -sf /lib/systemd/system/lightdm.service \
@@ -66,6 +69,12 @@ ln -sf /lib/systemd/system/lightdm.service \
 systemctl enable lightdm || true
 systemctl enable NetworkManager || true
 
-# Cleanup
+# Generate initramfs
+update-initramfs -u
+
+# Debug
+ls -lah /boot
+
 apt clean
+
 rm -rf /var/lib/apt/lists/*
