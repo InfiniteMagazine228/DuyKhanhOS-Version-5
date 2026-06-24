@@ -1,5 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Calamares
+Version=1.0
+Name=DuyKhanhOS Installer
 Exec=/usr/local/bin/start-installer
+Terminal=false
 NoDisplay=true
+X-GNOME-Autostart-enabled=true
