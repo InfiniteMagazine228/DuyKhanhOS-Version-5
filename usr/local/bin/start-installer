@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if cat /proc/cmdline | grep -q installer; then
-    sleep 5
-    pkexec calamares
+if grep -q installer /proc/cmdline; then
+    sleep 8
+    sudo calamares
 fi
