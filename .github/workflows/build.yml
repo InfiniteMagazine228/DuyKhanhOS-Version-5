@@ -14,10 +14,6 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      ##################################################
-      # Dependencies
-      ##################################################
-
       - name: Install dependencies
         run: |
           sudo apt update
@@ -32,64 +28,26 @@ jobs:
             grub2-common \
             mtools \
             dosfstools \
-            rsync \
-            git
-
-      ##################################################
-      # Clone Calamares upstream
-      ##################################################
-
-      - name: Clone Calamares
-        run: |
-          git clone --depth=1 -b calamares \
-            https://github.com/calamares/calamares.git
-
-          mkdir -p config/calamares/modules
-          mkdir -p config/calamares/branding
-
-          cp calamares/settings.conf \
-             config/calamares/
-
-          find calamares/src/modules \
-            -name "*.conf" \
-            -exec cp {} config/calamares/modules/ \;
-
-          cp -r calamares/src/branding/default \
-            config/calamares/branding/duykhanhos
-
-          sed -i \
-            's/^branding:.*/branding: duykhanhos/' \
-            config/calamares/settings.conf
-
-      ##################################################
-      # Build rootfs
-      ##################################################
+            rsync
 
       - name: Build rootfs
         run: |
           chmod +x scripts/build.sh
           sudo ./scripts/build.sh
 
-      ##################################################
-      # Customize rootfs
-      ##################################################
-
       - name: Customize rootfs
         run: |
           chmod +x scripts/customize.sh
           sudo ./scripts/customize.sh
 
-      ##################################################
-      # Debug boot files
-      ##################################################
+      - name: Debug Calamares
+        run: |
+          sudo ls -lah rootfs/etc/calamares || true
+          sudo find rootfs/etc/calamares | head -50 || true
 
       - name: Show boot files
         run: |
           sudo ls -lah rootfs/boot
-
-      ##################################################
-      # Create SquashFS
-      ##################################################
 
       - name: Create SquashFS
         run: |
@@ -98,10 +56,6 @@ jobs:
             -Xcompression-level 15 \
             -processors $(nproc) \
             -e boot
-
-      ##################################################
-      # Prepare live files
-      ##################################################
 
       - name: Prepare ISO structure
         run: |
@@ -115,52 +69,24 @@ jobs:
           sudo cp "$KERNEL" iso/live/vmlinuz
           sudo cp "$INITRD" iso/live/initrd.img
 
-      ##################################################
-      # Debug live files
-      ##################################################
-
-      - name: Debug ISO files
-        run: |
-          ls -lah iso/live
-
-      ##################################################
-      # Prepare GRUB
-      ##################################################
-
       - name: Build GRUB
         run: |
           chmod +x scripts/grub.sh
           sudo ./scripts/grub.sh
-
-      ##################################################
-      # Create ISO
-      ##################################################
 
       - name: Build ISO
         run: |
           chmod +x scripts/make_iso.sh
           sudo ./scripts/make_iso.sh
 
-      ##################################################
-      # Fix ownership
-      ##################################################
-
       - name: Fix ownership
         run: |
           sudo chown -R $USER:$USER output
-
-      ##################################################
-      # SHA256
-      ##################################################
 
       - name: Generate SHA256
         run: |
           sha256sum output/DuyKhanhOS-5.0-final-amd64.iso \
             > output/sha256sum.txt
-
-      ##################################################
-      # Upload Artifact
-      ##################################################
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -169,10 +95,6 @@ jobs:
           path: |
             output/DuyKhanhOS-5.0-final-amd64.iso
             output/sha256sum.txt
-
-      ##################################################
-      # Create Release
-      ##################################################
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
